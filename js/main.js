@@ -59,7 +59,7 @@ const phrases = [
   'RESTful APIs.',
   'beautiful UIs.',
   'scalable backends.',
-  'the future. ✨'
+  'the future.'
 ];
 let phraseIdx = 0;
 let charIdx = 0;
@@ -193,22 +193,42 @@ document.querySelectorAll('.glass-card').forEach(card => {
 });
 
 /* ══════════════════════════════════════
-   CONTACT FORM (mailto fallback)
+   CONTACT FORM
 ══════════════════════════════════════ */
-const sendBtn = document.querySelector('.contact-form-card .btn-primary');
+const sendBtn = document.getElementById('sendBtn');
 if (sendBtn) {
-  sendBtn.addEventListener('click', (e) => {
+  sendBtn.addEventListener('click', () => {
     const nameEl = document.querySelector('.contact-form-card input[type="text"]');
     const emailEl = document.querySelector('.contact-form-card input[type="email"]');
     const msgEl = document.querySelector('.contact-form-card textarea');
-    if (nameEl && emailEl && msgEl && nameEl.value && emailEl.value && msgEl.value) {
-      const subject = encodeURIComponent(`Portfolio Contact from ${nameEl.value}`);
-      const body = encodeURIComponent(`From: ${nameEl.value}\nEmail: ${emailEl.value}\n\n${msgEl.value}`);
-      window.location.href = `mailto:laibaafzaal04@gmail.com?subject=${subject}&body=${body}`;
-      e.preventDefault();
+    const formMsg = document.getElementById('form-msg');
+
+    // Validate all fields filled
+    if (!nameEl.value.trim() || !emailEl.value.trim() || !msgEl.value.trim()) {
+      formMsg.textContent = 'Please fill in all fields before sending.';
+      formMsg.style.color = '#ff6b6b';
+      formMsg.style.display = 'block';
+      setTimeout(() => { formMsg.style.display = 'none'; }, 3000);
+      return;
     }
+
+    // Build mailto and open
+    const subject = encodeURIComponent(`Portfolio Contact from ${nameEl.value.trim()}`);
+    const body = encodeURIComponent(
+      `Name: ${nameEl.value.trim()}\nEmail: ${emailEl.value.trim()}\n\nMessage:\n${msgEl.value.trim()}`
+    );
+    window.location.href = `mailto:laibaafzaal04@gmail.com?subject=${subject}&body=${body}`;
+
+    // Show success message and clear fields
+    formMsg.textContent = 'Opening your email client...';
+    formMsg.style.color = 'var(--cyan)';
+    formMsg.style.display = 'block';
+    nameEl.value = '';
+    emailEl.value = '';
+    msgEl.value = '';
+    setTimeout(() => { formMsg.style.display = 'none'; }, 4000);
   });
 }
 
 console.log('%c Laiba Afzaal — Portfolio', 'color: #00d4ff; font-family: monospace; font-size: 18px; font-weight: bold;');
-console.log('%c Built with ❤️ and clean code', 'color: #6b7280; font-family: monospace; font-size: 12px;');
+console.log('%c Built with clean code', 'color: #6b7280; font-family: monospace; font-size: 12px;');
