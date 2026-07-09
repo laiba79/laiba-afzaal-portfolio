@@ -79,6 +79,16 @@
   .f8{ top: 35%; left: 95%; font-size: 22px; animation-duration: 21s; animation-delay: -9s; }
   .f9{ top: 58%; left: 96%; font-size: 8px; animation-duration: 13s; animation-delay: -1s; }
   .f10{ top: 92%; left: 12%; font-size: 22px; animation-duration: 23s; animation-delay: -7s; }
+  .f11{ top: 15%; left: 30%; font-size: 18px; animation-duration: 16s; animation-delay: -10s; }
+  .f12{ top: 82%; left: 30%; font-size: 20px; animation-duration: 19s; animation-delay: -3s; }
+  .f13{ top: 5%; left: 78%; font-size: 14px; animation-duration: 13s; animation-delay: -6s; }
+  .f14{ top: 50%; left: 60%; font-size: 20px; animation-duration: 18s; animation-delay: -12s; }
+  .f15{ top: 30%; left: 20%; font-size: 9px; animation-duration: 11s; animation-delay: -2s; }
+  .f16{ top: 65%; left: 70%; font-size: 24px; animation-duration: 20s; animation-delay: -14s; }
+  .f17{ top: 40%; left: 40%; font-size: 16px; animation-duration: 17s; animation-delay: -5s; }
+  .f18{ top: 95%; left: 65%; font-size: 12px; animation-duration: 14s; animation-delay: -9s; }
+  .f19{ top: 60%; left: 15%; font-size: 20px; animation-duration: 21s; animation-delay: -11s; }
+  .f20{ top: 20%; left: 8%; font-size: 7px; animation-duration: 10s; animation-delay: -4s; }
 
   @keyframes drift{
     0%   { transform: translate(0,0) rotate(0deg); }
@@ -175,6 +185,36 @@
     background: var(--mint);
     box-shadow: 0 0 12px var(--mint);
   }
+  .typewriter-line{
+    font-family: var(--body);
+    font-size: clamp(18px, 2.2vw, 24px);
+    color: var(--paper-dim);
+    margin-bottom: 20px;
+    display:flex;
+    align-items:center;
+    gap: 2px;
+  }
+  .typewriter-text{
+    font-weight: 700;
+    color: var(--gold);
+    background: linear-gradient(90deg, var(--gold), var(--mint));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .tw-cursor{
+    color: var(--mint);
+    font-weight: 400;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink{
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .tw-cursor{ animation: none; }
+  }
+
   .hero h1{
     font-family: var(--display);
     font-weight: 500;
@@ -550,6 +590,16 @@
   <span class="floaty f8">#</span>
   <span class="floaty f9">●</span>
   <span class="floaty f10">&lt;/&gt;</span>
+  <span class="floaty f11">{ }</span>
+  <span class="floaty f12">$</span>
+  <span class="floaty f13">✦</span>
+  <span class="floaty f14">[ ]</span>
+  <span class="floaty f15">●</span>
+  <span class="floaty f16">=&gt;</span>
+  <span class="floaty f17">01</span>
+  <span class="floaty f18">✦</span>
+  <span class="floaty f19">&lt;/&gt;</span>
+  <span class="floaty f20">●</span>
 </div>
 
 <header>
@@ -564,7 +614,7 @@
     </ul>
     <div class="nav-actions">
       <a href="Laiba_Afzaal_Resume.pdf" download class="nav-cta nav-resume">Resume ↓</a>
-      <a href="mailto:laibaafzaal04@gmail.com" class="nav-cta">let's connect</a>
+      <a href="mailto:laibaafzaal04@gmail.com" class="nav-cta">Say hello</a>
     </div>
   </nav>
 </header>
@@ -574,6 +624,7 @@
   <!-- HERO -->
   <section class="hero" id="hero">
     <div class="eyebrow">available for internships &amp; freelance</div>
+    <div class="typewriter-line">I'm a <span id="typewriter" class="typewriter-text"></span><span class="tw-cursor">|</span></div>
     <h1>I connect the pieces<br>that make software <em>work.</em></h1>
     <p class="hero-sub">Full-stack developer building fast, reliable products with the MERN stack — from interfaces people enjoy using to APIs that don't fall over at 10,000 users. Based in Lahore, Pakistan.</p>
     <div class="hero-actions">
@@ -827,6 +878,45 @@
 </main>
 
 <script>
+  // Typewriter effect cycling through roles.
+  (function(){
+    const el = document.getElementById('typewriter');
+    if(!el) return;
+    const roles = ['Full Stack Developer', 'MERN Stack Engineer', 'ML Explorer', 'API Builder', 'React Developer'];
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if(reduceMotion){
+      el.textContent = roles[0];
+      return;
+    }
+
+    let roleIndex = 0, charIndex = 0, deleting = false;
+
+    function tick(){
+      const current = roles[roleIndex];
+
+      if(!deleting){
+        charIndex++;
+        el.textContent = current.slice(0, charIndex);
+        if(charIndex === current.length){
+          deleting = true;
+          setTimeout(tick, 1400);
+          return;
+        }
+      } else {
+        charIndex--;
+        el.textContent = current.slice(0, charIndex);
+        if(charIndex === 0){
+          deleting = false;
+          roleIndex = (roleIndex + 1) % roles.length;
+        }
+      }
+      setTimeout(tick, deleting ? 35 : 65);
+    }
+
+    tick();
+  })();
+
   // Opens the user's email client with the form contents prefilled.
   function handleSubmit(e){
     e.preventDefault();
